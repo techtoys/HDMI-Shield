@@ -12,22 +12,25 @@
     (2) A Due Zipper Board of DTE 20171024 or later. Jumpers set to P12 to use ESP8266 as the host. <br>
     (3) Compatible hosts tested so far are Arduino DUE, Arduino M0 (direct stack), Genuino 101 (direct stack), Teensy 3.2 stacking on a bridge PCB <br>
         to make Teensy compatible with legacy Arduino Uno form factor (PCB version is DTE20171030), and Teensy 3.5 stacking on the same PCB.<br>
-        Also tested with ESP8266 (Due Zipper Board DTE 20171024) and ESP32-PICO-KIT with jumper wires<br>
-        Testing with Arduino M0 board with a single USB port needs more effort. Need to replace Serial with SerialUSB in this file and <br>
-        printf.h file in src code folder.<br>
+        Successfully tested with ESP8266 (Due Zipper Board DTE 20171024), and ESP32-PICO-KIT with jumper wires<br>
+        When an Arduino M0 is used, we need to replace all occurences of Serial with SerialUSB in this file and printf.h file in the source code folder.<br>
+        If it is not an Arduino M0, no change is required.<br>
         
         How to use this demo with ESP8266: <br>
     (1) On HDMI Shield of date code DTE 20171228 or later, make sure dip switch S1 set to 1(ON), 2(OFF), 3(ON), 4(OFF). This setting uses SPI access for RA8876 (SPI_dipSw_setting.jpg).<br>
-    (3) Stack HDMI Shield on top of Due Zipper Board.
-    (4) From Arduino IDE (version 1.8.1 or later), set Generic ESP8226 Module from Tools -> Board -> Generic ESP8226 Module. Assumed you have ESP8266 modules installed in your Arduino IDE.<br>
-    (5) Configurations in detail please refer to Tools_ESP8266_Config.jpg.<br>
-    (6) Because it is a CH340C USB<->UART converter onboard of Due Zipper, you will have to download its driver.<br>
-        Its link can be found from https://sparks.gogo.co.nz/ch340.html, or http://www.wch.cn/download/CH341SER_EXE.html. <br>
-    (7) Connect HDMI Shield to your HDTV/LCD monitor of 1080p with a HDMI cable. No DVI yet. Only use HDMI interface. Switch on the TV.<br>
-    (8) Now connect Due Zipper to your PC with a microUSB cable. A new COM Port will be enumerated available from Tools->Port. It is COM55 in my case(New_ESP8266_comm_port.jpg).<br>
-    (9) Select the new COM port created, on Due Zipper close to its left edge, there are two buttons, RESET and PROG (ESP8266_prog_reset_keys.jpg).<br>
+    (2) Stack HDMI Shield on top of Due Zipper Board. Make sure all jumpers set to P12 onboard to use ESP8266 WiFi module as the host (ESP8266_use_P12_jumpers.jpg). <br>
+    (3) Because it is a CH340C USB<->UART converter onboard of Due Zipper, you will have to download its driver<br>
+        from https://sparks.gogo.co.nz/ch340.html, or http://www.wch.cn/download/CH341SER_EXE.html. <br>
+    (4) Install ESP8266 Arduino library with Additional Boards Manager URLs set to http://arduino.esp8266.com/stable/package_esp8266com_index.json.<br>
+        Detailed instruction can be found at http://esp8266.github.io/Arduino/versions/2.0.0/doc/installing.html<br>
+        At time of writing the ESP8266 Arduino library version is 2.4.1.<br>
+    (5) From Arduino IDE (version 1.8.1 or later), set Generic ESP8226 Module from Tools -> Board -> Generic ESP8226 Module.<br>
+        Configurations in detail please refer to Tools_ESP8266_Config.jpg.<br>
+    (6) Connect HDMI Shield to your HDTV/LCD monitor of 1080p with a HDMI cable. No DVI yet. Only use HDMI interface. Switch on the TV.<br>
+    (7) Now connect Due Zipper to your PC with a microUSB cable. A new COM Port will be enumerated available from Tools->Port. It is COM55 in my case (New_ESP8266_comm_port.jpg).<br>
+    (8) Select the new COM port created, on Due Zipper close to its left edge, there are two buttons, RESET and PROG (ESP8266_prog_reset_keys.jpg).<br>
         Hold the PROG key with a single click on RESET key. This will bring ESP8266 to bootloader mode. You may release PROG key after releasing RESET key.<br>
-    (10)Click Upload from Arduino IDE (Sketch->Upload). Observe a Done Uploading message with 100% from Arduino IDE.<br>
+    (9) Click Upload from Arduino IDE (Sketch->Upload). Observe a Done Uploading message with 100% from Arduino IDE.<br>
     (10)If it is a whole screen of Cyan color displayed on the TV, congratulation; everything seems fine so far. 
 
         Debug via Serial Monitor: <br>
@@ -50,7 +53,8 @@
    @file     Ra8876_primitive_test.ino
    @author   John Leung @ TechToys (www.TechToys.com.hk)
    @section  HISTORY
-   Date      3rd Nov 2017 first release
+   Date       3rd Nov 2017 first release
+              16th April 2018 instruction revised with screen shots in jpg uploaded.
 */
 
 #include "Ra8876_Lite.h"
