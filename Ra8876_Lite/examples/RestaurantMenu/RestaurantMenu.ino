@@ -1,13 +1,20 @@
 /**
     @brief  Example to display a menu for restaurant by WiFi or Serial Monitor.<br>
-    
+            It is advised to run Ra8876_primitive_test.ino with ESP8266 (on Due Zipper board DTE 20171024) before running this demo.<br>
+            Follow instructions on Ra8876_primitive_test.ino to make sure everything working fine.<br>
+            This demo needs a microSD card. Copy all files under \assets folder to the root directory of the microSD card. Install the card to J200 onboard of HDMI Shield.<br>
+            Also need to install ArduinoJson library. Go to http://arduinojson.org/ to download the JSON library and get it installed. Restart Arduino IDE after installation.<br>
+            IMPORTANT: type in the ssid and password in this file matching your router under<br>
+				const char* ssid = "your-ssid"; <br>
+				const char* password = "your-pw"; <br>
+
     @note   Major tasks demonstrated in this example are:<br>
             (1) Initialize RA8876 to generate a RGB video source of 800x480 @ 60Hz.<br>
             (2) Initialize CH7035B to convert the video source to a VESA-compatible signal of 1280x768 @ 60Hz.<br>
             (3) Initialize SD library.<br>
             (4) Initialize ArduinoJson library (http://arduinojson.org/).<br>
             (5) Use BitFontCreator Grayscale (v4.5) to create antialiased 4-bpp bitmap fonts in binary format from a truetype font Bradley_Hand installed in PC.<br>
-                The binary files created (Brad60.bin, Brad44.bin, & Brad34.bin) are copied to a 8GB microSD card.<br>
+                The binary files created (Brad60.bin, Brad44.bin, & Brad34.bin) have been copied to a 8GB microSD card.<br>
             (6) Divide SDRAM into various regions:<br>
                 0 - line number 479 as the Main Window (This is the visible display area).<br>
                 480 - 959 as frame buffer (2D copy from frame buffer to Main Window only after rendering finished. This avoid snail-like pixel raster).<br>
@@ -20,13 +27,6 @@
                 A simple Android App developed by MIT App Inventor 2 is provided to update the menu in landscape or Portrait.<br>
                 Courses can be edited and updated in wireless manner, triggered by a simple <update> button in the App.<br>
                 If the host mcu is not ESP8266 (Arduino Due/Teensy/M0), command in JSON format is supported over Serial Monitor. <br>
-
-            Following hardware is assumed :<br>
-            (1) HDMI Shield Shield of DTE 20171228 or later. <br>
-            (2) A Due Zipper Board of DTE 20171024 or later. Jumpers set to P13 if Arduino Due is used as the host. Jumpers set to P12 to use ESP8266 as host + Web server.<br>
-            (3) A monitor with DVI or HDMI interface compliant with VESA timing standard 1280*768 or higher
-            (4) Compatible hosts tested so far are ESP8266, Arduino DUE, Genuino 101 (direct stack), Teensy 3.2 & 3.5.<br>
-            (5) Android smart phone and a 8GB microSD card.<br>
           
             Debug via Serial Monitor is available for all hosts including ESP8266. Therefore it is possible to update the restaurant menu by WiFi or Serial Monitor for ESP8266.<br>
             (1) Open Serial Monitor, set to Newline with baud rate set to 115200baud. <br>
@@ -48,7 +48,8 @@
    @file     RestaurantMenu.ino
    @author   John Leung @ TechToys (www.TechToys.com.hk)
    @section  HISTORY
-   Date      6th Dec 2017 first release
+   Date       6th Dec 2017 first release
+              16th April 2018 comment in this section revised
 */
 
 /**
