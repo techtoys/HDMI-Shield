@@ -72,6 +72,17 @@
  *
  */
 
+ /**
+  * Revision:
+  *	Add code snippet in jsonOverWifi() to filter url encode characters %nn. <br>
+  *	For some unknown reason(s) http message got url encoded for characters '{', '"', and 'space'<br>
+  *	to %7B, %22, and %20 in some environments but not the other.
+  * Reference: https://arduino.stackexchange.com/questions/18007/simple-url-decoding
+  * The code snippet is to parse for a % sign and then convert next two characters as hex into ASCII equivalent for JSON decode.<br>
+  * Programmer: John Leung @ TechToys Co. Hong Kong
+  *	Date: 19-04-2018
+  */
+  
 #include "Ra8876_Lite.h"
 #include "HDMI/Ch703x.h"
 #include <SD.h>
@@ -375,6 +386,41 @@ void  jsonOverWifi(void)
     // Retrieve the "{...}" part by skipping GET / and HTTP/1.1
     // Wanted to use HTTP POST but don't know how to use HTTP POST in MIT App Inventor 2!!!
 
+	//Filter URL encoded characters when a % hit
+	//Reference: https://arduino.stackexchange.com/questions/18007/simple-url-decoding
+	char *leader = inChar;
+	char *follower = leader;
+	while(*leader)
+	{
+	    // Check to see if the current character is a %
+		if (*leader == '%') {
+
+        // Grab the next two characters and move leader forwards
+        leader++;
+        char high = *leader;
+        leader++;
+        char low = *leader;
+
+        // Convert ASCII 0-9A-F to a value 0-15
+        if (high > 0x39) high -= 7;
+        high &= 0x0f;
+
+        // Same again for the low byte:
+        if (low > 0x39) low -= 7;
+        low &= 0x0f;
+
+        // Combine the two into a single byte and store in follower:
+        *follower = (high << 4) | low;
+		} else {
+        // All other characters copy verbatim
+        *follower = *leader;
+		}	
+    // Move both pointers to the next character:
+    leader++;
+    follower++;
+	}
+	*follower = 0;
+	
     String menuString(inChar);                  ///convert to a String to take advantage of indexOf() and substring() functions below
     int addr_start = menuString.indexOf('{');   ///look for opening bracket '{'
     int addr_end = menuString.indexOf('}');     ///closing bracket '}'
@@ -393,7 +439,6 @@ void  jsonOverWifi(void)
       Serial.println("Client disconnected");
       return;
     }
-    
   }
 }
 #endif
