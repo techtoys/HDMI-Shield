@@ -57,6 +57,17 @@
               16th April 2018 instruction revised with screen shots in jpg uploaded.
 */
 
+/**
+ * Changes :
+ * (1) ra8876lite.begin() -> ra8876lite.begin(&CEA_1280x720p_60Hz) for less heat from HDMI encoder.
+ * Instead of using onboard boot ROM with ra8876lite.begin(), an argument &CEA_1280x720p_60Hz is now used for initialization.
+ * Resolution is the same at 1280*720 60Hz output from RA8876 for both methods. With boot ROM, it is possible to fetch EDID information
+ * from a TV/monitor. With explicit argument &CEA_1280x720p_60Hz no EDID is available.
+ * This change is to avoid overheat from CH7035 HDMI encoder leading to overloading of 5V supply from USB cable. 
+ * (2) New function HDMI_Tx.init(VIDEO_in_1280x720_out_HDMI_1080p_60Hz) after HDMI_Tx.begin() to initialize CH7035B for
+ * 1280*720 video input -> 1080p 60Hz HDMI output. 
+ * Date: 29th Jan 2019
+ */
 #include "Ra8876_Lite.h"
 #include "HDMI/Ch703x.h"
 
@@ -140,7 +151,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(RA8876_XNINTR), isr, FALLING); //pending for Vsync hardware is not ready yet
   
   ///@note  Initialize RA8876 starts from here
-  if (!ra8876lite.begin())  //init RA8876 with a video resolution of 1280*720@60Hz (720p)
+  if (!ra8876lite.begin(&CEA_1280x720p_60Hz))  //init RA8876 with a video resolution of 1280*720@60Hz (720p)
   {
 #ifdef DEBUG_LLD_RA8876
     printf("RA8876 or RA8877 Fail\n");
@@ -155,6 +166,7 @@ void setup() {
     ra8876lite.displayOn(true);
     
     HDMI_Tx.begin();                  //Init I2C
+    HDMI_Tx.init(VIDEO_in_1280x720_out_HDMI_1080p_60Hz); //map defined in .\HDMI\videoInOutMap.h
     HDMI_Tx.setI2SAudio(0, 0, 0);     //disable audio 
     delay(1000);
   }
