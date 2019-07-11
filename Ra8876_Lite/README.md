@@ -1,5 +1,5 @@
 # **HDMI Shield**  #
-![](http://www.techtoys.com.hk/BoardsKits/HDMIshield/images/HDMIShield_pin_diagram.png)
+![](http://www.techtoys.com.hk/BoardsKits/HDMIshield/images/HDMIShield_v2_pin_diagram.png)
 is an Arduino compatible development board to bridge the gap between small MCUs and High Definition Television (HDTV).
 HDTVs or Full HD monitors with HDMI/DVI interface require a pixel clock of 148MHz for 1080p resolution.
 Without an Application Specific IC (ASIC) this pixel clock is out of reach from small MCUs.
@@ -65,7 +65,7 @@ Up to time of writing the following platforms have been tested:
 Start with `Ra8876_primitive_test.ino` Arduino example. I am using version 1.8.1 for development in my lab.<br>Comprehensive comments have been added in each example.<br>
 Copy this library to your library folder at C:\Users\YOUR NAME\Documents\Arduino\libraries.
 	
-Updated 14-03-2018
+Updated 11-07-2019 for board version 2
 
 Written by John Leung @ TechToys Co. Hong Kong <br>
 www.TechToys.com.hk<br>
