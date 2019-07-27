@@ -21,6 +21,9 @@ Take a look at this YouTube video<br>
 # Source code includes : #
 
 RA8876 & CH7035B drivers in C++. Arduino compatible library and examples are available, and libraries for mbed and Microchip Harmony Framework will be developed.
+
+<strong>Complete schematic is now available in pdf.</strong>
+
 Up to time of writing the following platforms have been tested:
 
 ----------
