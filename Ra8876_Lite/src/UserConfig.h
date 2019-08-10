@@ -1,3 +1,8 @@
+/**
+ * Add support for board version 2, for Serial Flash 128Mbit. Directive is : #define BOARD_VERSION_2
+ * Date: 2019-08-10
+ */
+
 #ifndef _USER_CONFIG_H
 #define _USER_CONFIG_H
 
@@ -22,6 +27,8 @@
 
 ///@note	This option allows debug information for memory module (SDRAM) from Serial Monitor(Arduino) when Allegro is used.
 //#define DEBUG_LLD_MEMORY
+
+#define BOARD_VERSION_2
 
 #if defined (TEENSYDUINO)
 const int RA8876_XNSCS = 20;
@@ -55,6 +62,9 @@ const int SDCARD_CS_PIN = 15;	//SD_CS on HSPI CS=15
 const int SDCARD_MOSI_PIN = 13;	//HSPI MOSI
 const int SDCARD_MISO_PIN = 4;	//Don't use HSPI's native MISO (12) otherwise boot problem.
 const int SDCARD_SCK_PIN = 14;	//HSPI SCK
+
+const int CH7035_SDA = 32;
+const int CH7035_SCL = 33;
 #else
 //Arduino Due, M0, or Arduino 101
 const int RA8876_XNSCS = 10;
