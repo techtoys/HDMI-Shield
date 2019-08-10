@@ -27,7 +27,7 @@ RA8876 & CH7035B drivers in C++. Arduino compatible library and examples are ava
 Up to time of writing the following platforms have been tested:
 
 # New example : Ticket Display System #
-With fully source code (Ra8876_ticketdisplay_part1.ino) and pdf doc in example folder.
+With full source code (Ra8876_ticketdisplay_part1.ino) and pdf doc in example folder.
 ![](http://www.techtoys.com.hk/BoardsKits/HDMIshield/images/broccoli_589.jpg)
 
 ----------
