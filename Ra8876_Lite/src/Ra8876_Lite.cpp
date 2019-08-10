@@ -88,6 +88,10 @@
 	   |______|
  */
  
+/**
+ * Add support for board version 2, for Serial Flash 128Mbit. Directive is : #define BOARD_VERSION_2
+ * Date: 2019-08-10
+ */
 #include "Ra8876_Lite.h"
 
 /**
@@ -157,7 +161,7 @@ void Ra8876_Lite::hal_bsp_init(void)
 	_SPI->begin(RA8876_SCK,RA8876_MISO,RA8876_MOSI,RA8876_XNSCS);
 	pinMode(_xnscs, OUTPUT); digitalWrite(_xnscs, HIGH);    //RA8876 deselect by default
 	//_SPI->setHwCs(true);
-	//Only 24MHz or slower SPI clock working for some unknown reason(s)...
+	//Only 26MHz with IOMUX
 	_SPI->setFrequency(24000000);
   #else
     //default initialization for Arduino 101
@@ -535,7 +539,7 @@ bool Ra8876_Lite::begin(const LCDParam *timing, MonitorInfo *edid, bool automati
     printf("V blanking: %d\n", lcd.vblank);
     printf("V front porch: %d\n", lcd.vfporch);
     printf("V pulse width: %d\n", lcd.vpulse);
-    printf("Pixel clock: %d\n", lcd.pclk);
+    printf("Pixel clock: %ld\n", lcd.pclk);
     printf("Pclk Polarity: %d\n", lcd.pclkPolarity);
     printf("Vsync Polarity: %d\n", lcd.vsyncPolarity);
     printf("Hsync Polarity: %d\n", lcd.hsyncPolarity);
@@ -1943,7 +1947,7 @@ int Ra8876_Lite::bfc_DrawChar_RowRowUnpacked(
 	)
 {
 	File fontFile = SD.open(pFilename);
-
+	
 	if(!fontFile) {
 		printf("No such file exist!\n");
 		return 0;
@@ -2021,7 +2025,7 @@ int Ra8876_Lite::bfc_DrawChar_RowRowUnpacked(
 	BFC_BIN_CHARINFO bfcBinFont_info;
 	
 	uint16_t width = bfcBinFont_info.Width = (uint16_t)buf[0]|(uint16_t)buf[1]<<8;
-	uint16_t data_size = bfcBinFont_info.DataSize = (uint16_t)buf[2]|(uint16_t)buf[3]<<8;
+	//uint16_t data_size = bfcBinFont_info.DataSize = (uint16_t)buf[2]|(uint16_t)buf[3]<<8;
 	//bfcBinFont_info.OffData is the physical address of pixel data
 	uint32_t data_address = bfcBinFont_info.OffData = (uint32_t)buf[4]|(uint32_t)buf[5]<<8|(uint32_t)buf[6]<<16|(uint32_t)buf[7]<<24;	
 	//printf("BFC_BIN_CHARINFO : width = %d, size = %d, address = 0x%X\n", bfcBinFont_info.Width, bfcBinFont_info.DataSize, bfcBinFont_info.OffData);
@@ -2606,6 +2610,7 @@ uint16_t Ra8876_Lite::getBfcFontHeight(const BFC_FONT *pFont)
 uint16_t Ra8876_Lite::getBfcCharWidth(const char *pFilename, const uint16_t ch)
 {
 	File fontFile = SD.open(pFilename);
+	
 	if(!fontFile) return 0;
 	
 	uint8_t buf[12];
@@ -2705,8 +2710,8 @@ uint16_t Ra8876_Lite::getBfcFontHeight(const char *pFilename)
 	BFC_BIN_FONT bfcBinFont;
 	
 	File fontFile = SD.open(pFilename);
-	if(!fontFile) return 0;
 	
+	if(!fontFile) return 0;
 	fontFile.read((uint8_t *)buf, 12);	
 	bfcBinFont.FontType = (uint32_t)buf[0]|(uint32_t)buf[1]<<8|(uint32_t)buf[2]<<16|(uint32_t)buf[3]<<24;	
 	uint16_t height = bfcBinFont.FontHeight = (uint16_t)buf[4]|(uint16_t)buf[5]<<8;
@@ -4225,8 +4230,14 @@ void Ra8876_Lite:: setSerialFlash(uint8_t scs_select)
 											uint16_t picture_width,
 											uint32_t src_addr)
  {	 
+ #if defined (BOARD_VERSION_2)
+	//128Mbit Serial Flash on board version 2
+	lcdRegDataWrite(RA8876_SFL_CTRL,RA8876_SERIAL_FLASH_SELECT1<<7|RA8876_SERIAL_FLASH_DMA_MODE<<6|RA8876_SERIAL_FLASH_ADDR_24BIT<<5|RA8876_FOLLOW_RA8876_MODE<<4|RA8876_SPI_FAST_READ_8DUMMY);//b7h
+ #else
+	//256Mbit Serial Flash on board version 1
 	lcdRegDataWrite(RA8876_SFL_CTRL,RA8876_SERIAL_FLASH_SELECT1<<7|RA8876_SERIAL_FLASH_DMA_MODE<<6|RA8876_SERIAL_FLASH_ADDR_32BIT<<5|RA8876_FOLLOW_RA8876_MODE<<4|RA8876_SPI_FAST_READ_8DUMMY);//b7h
-  
+ #endif
+ 
 	lcdRegDataWrite(RA8876_SPI_DIVSOR,RA8876_SPI_DIV2);//bbh  
 	lcdRegDataWrite(RA8876_DMA_DX0,x0);//c0h
 	lcdRegDataWrite(RA8876_DMA_DX1,x0>>8);//c1h
@@ -4260,12 +4271,22 @@ void Ra8876_Lite:: setSerialFlash(uint8_t scs_select)
 											uint16_t picture_width, uint16_t picture_height, 
 											uint32_t src_addr)
 {
+ #if defined (BOARD_VERSION_2)
+	//128Mbit Serial Flash on board version 2
+	lcdRegDataWrite(RA8876_SFL_CTRL,
+					RA8876_SERIAL_FLASH_SELECT1<<7|
+					RA8876_SERIAL_FLASH_DMA_MODE<<6|
+					RA8876_SERIAL_FLASH_ADDR_24BIT<<5|
+					RA8876_FOLLOW_RA8876_MODE<<4|
+					RA8876_SPI_FAST_READ_8DUMMY);//b7h 
+ #else
 	lcdRegDataWrite(RA8876_SFL_CTRL,
 					RA8876_SERIAL_FLASH_SELECT1<<7|
 					RA8876_SERIAL_FLASH_DMA_MODE<<6|
 					RA8876_SERIAL_FLASH_ADDR_32BIT<<5|
 					RA8876_FOLLOW_RA8876_MODE<<4|
 					RA8876_SPI_FAST_READ_8DUMMY);//b7h
+  #endif
   
 	lcdRegDataWrite(RA8876_SPI_DIVSOR,RA8876_SPI_DIV2);//bbh
 	
