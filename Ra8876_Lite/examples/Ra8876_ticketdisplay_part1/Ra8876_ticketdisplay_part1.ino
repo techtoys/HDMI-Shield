@@ -6,6 +6,9 @@
              From input box type in any 3 digit number e.g. 123<Send>. The monitor/TV will show the number you have entered.
              If you want to change the background image, please change from setup() a function: 
              putSerialFlashImage(0, 0, "background_1") -> putSerialFlashImage(0, 0, "background_2"), or vice versa.
+
+             Important: If you are using HDMI Shield version 1 (with 256Mbit Serial Flash), please open UserConfig.h
+             from library folder, and comment #define BOARD_VERSION_2 for this demo to work.
              
    @file     Ra8876_ticketdisplay_part1.ino
    @author   John Leung @ TechToys (www.TechToys.com.hk)
