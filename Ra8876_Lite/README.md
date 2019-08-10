@@ -26,6 +26,10 @@ RA8876 & CH7035B drivers in C++. Arduino compatible library and examples are ava
 
 Up to time of writing the following platforms have been tested:
 
+# New example : Ticket Display System #
+With fully source code (Ra8876_ticketdisplay_part1.ino) and pdf doc in example folder.
+![](http://www.techtoys.com.hk/BoardsKits/HDMIshield/images/broccoli_589.jpg)
+
 ----------
 1. ESP8266 on an Arduino form factor PCB (Due Zipper Board DTE20171024). With HDMI Shield stacking on this board you will be able to run all examples in this repository.<br>![](http://www.techtoys.com.hk/BoardsKits/HDMIshield/images/DueZipperBoard_DTE20171024_400x300.png)
 2. ESP32-PICO-KIT wired up by jumper cables. It is messy, I know! But there are two SPI ports with ESP32, HSPI and VSPI.<br>Successfully using HSPI for microSD, and VSPI for RA8876 for a significant performance boost in reading data from SD.<br>Don't forget ESP32 is a WiFi and Bluetooth SoC. It is possible to develop applications for IoT with real-time data displayed on a HDTV.<br>![](http://www.techtoys.com.hk/BoardsKits/HDMIshield/images/ESP32-PICO-KIT-wiredUP.png)
@@ -59,6 +63,7 @@ Up to time of writing the following platforms have been tested:
 		\Ra8876_primitive_test
 		\Ra8876_slideshow
 		\RestaurantMenu
+		\Ra8876_ticketdisplay_part1
 	\src
 	library.properties
 	README.md (this file)
@@ -68,7 +73,7 @@ Up to time of writing the following platforms have been tested:
 Start with `Ra8876_primitive_test.ino` Arduino example. I am using version 1.8.1 for development in my lab.<br>Comprehensive comments have been added in each example.<br>
 Copy this library to your library folder at C:\Users\YOUR NAME\Documents\Arduino\libraries.
 	
-Updated 11-07-2019 for board version 2
+Updated 11-08-2019 for new example for Ticket Display System
 
 Written by John Leung @ TechToys Co. Hong Kong <br>
 www.TechToys.com.hk<br>
