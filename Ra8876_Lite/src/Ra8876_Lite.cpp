@@ -92,6 +92,13 @@
  * Add support for board version 2, for Serial Flash 128Mbit. Directive is : #define BOARD_VERSION_2
  * Date: 2019-08-10
  */
+
+ /**
+  * Add support for RA8876M with 64Mbit RAM
+  * Date: 2021-06-11
+  * Add #ifdef RA8876M...#endif in UserConfig.h
+  */
+
 #include "Ra8876_Lite.h"
 
 /**
@@ -1018,9 +1025,17 @@ bool Ra8876_Lite::ra8876SdramInitial(void)
 uint8_t	  	CAS_Latency;
 uint16_t	Auto_Refresh;
 
-  CAS_Latency=3;
+if(DRAM_FREQ<=133) 
+	CAS_Latency=2;
+else
+	CAS_Latency=3;
+#ifdef RA8876M
+  Auto_Refresh=(64*DRAM_FREQ*1000L)/(8192L);
+  lcdRegDataWrite(0xe0,0x28); 
+#else
   Auto_Refresh=(64*DRAM_FREQ*1000L)/(4096L);
-  lcdRegDataWrite(0xe0,0x31);      
+  lcdRegDataWrite(0xe0,0x31); 
+#endif	
   lcdRegDataWrite(0xe1,CAS_Latency);      //CAS:2=0x02锛孋AS:3=0x03
   lcdRegDataWrite(0xe2,Auto_Refresh);
   lcdRegDataWrite(0xe3,Auto_Refresh>>8);
