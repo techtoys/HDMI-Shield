@@ -8,7 +8,8 @@
   * Date: 2021-06-11
   * Add #ifdef RA8876M...#endif in UserConfig.h
   */
-//#define RA8876M
+
+////#define RA8876M
 
 #ifndef _USER_CONFIG_H
 #define _USER_CONFIG_H
